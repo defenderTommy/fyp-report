@@ -1,0 +1,107 @@
+%%%%%%%%%%%%%%%%%%%%% chapter.tex %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% sample chapter
+%
+% Use this file as a template for your own input.
+%
+%%%%%%%%%%%%%%%%%%%%%%%% Springer-Verlag %%%%%%%%%%%%%%%%%%%%%%%%%%
+%\motto{Use the template \emph{chapter.tex} to style the various elements of your chapter content.}
+\chapter{Literature Review 2}
+\label{lit_review_2} % Always give a unique label
+% use \chaptermark{}
+% to alter or adjust the chapter heading in the running head
+
+\abstract*{Each chapter should be preceded by an abstract (10--15 lines long) that summarizes the content. The abstract will appear \textit{online} at \url{www.SpringerLink.com} and be available with unrestricted access. This allows unregistered users to read the abstract as a teaser for the complete chapter. As a general rule the abstracts will not appear in the printed version of your book unless it is the style of your particular book or that of the series to which your book belongs.
+Please use the 'starred' version of the new Springer \texttt{abstract} command for typesetting the text of the online abstracts (cf. source file of this chapter template \texttt{abstract}) and include them with the source files of your manuscript. Use the plain \texttt{abstract} command if the abstract is also to appear in the printed version of the book.}
+
+\abstract{Each chapter should be preceded by an abstract (10--15 lines long) that summarizes the content. The abstract will appear \textit{online} at \url{www.SpringerLink.com} and be available with unrestricted access. This allows unregistered users to read the abstract as a teaser for the complete chapter. As a general rule the abstracts will not appear in the printed version of your book unless it is the style of your particular book or that of the series to which your book belongs.\newline\indent
+Please use the 'starred' version of the new Springer \texttt{abstract} command for typesetting the text of the online abstracts (cf. source file of this chapter template \texttt{abstract}) and include them with the source files of your manuscript. Use the plain \texttt{abstract} command if the abstract is also to appear in the printed version of the book.}
+
+\section{Localizing Location Using Mobile Phone Sensors}
+\label{lit_rev:10}
+
+In order to generate a precious map of image spheres with accurate relative location data we should have a mechanism to capture precious location information while capturing image spheres. For location capturing purpose the trivial technology is using Global Positioning System (GPS) to capture the location. GPS current accuracy is around 5m, which is not that suitable for our usage where we need a higher accuracy of location capturing. Since our system?s requirement is capturing relative location of image spheres, we thought of using accelerometer and gyroscope of a mobile phone to get those necessary location information.
+
+\subsection{Precise Indoor Localization Using Smartphones}
+Martin et al. introduce an indoor localization application \cite{48} using sensors of a smartphone as research paper in international conference on multimedia 2010. Their system is using Wi-Fi unit, cellular communication unit, accelerometer and magnetometer of a smartphone to capture location information.
+
+\subsubsection{Approach}
+According to authors GPS is only reliable outdoor localizing where device is directly visible to satellite, also accelerometer along gives noisy readings. As they expect initially Wi-Fi unit of the mobile device is the most reliable approach to localize their experimental unit. Authors use Received Signal Strength Indication (RSSI) information of Wi-Fi beacon packets within buildings to generate a radio map of different locations. They have been faced some issues when using different devices to capture location data which they refer as ?signal reception bias? which caused by characteristics of different antennas of different devices. Authors have used accelerometer readings and magnetometer reading to identify the orientation of the device which they have used to improve the accuracy of location information.
+
+\subsubsection{Experiment}Authors has deployed their experiment in a building where it has infrastructure of Wi-Fi access points that give fully coverage to the building. They have used android base mobile devices to measure Wi-Fi strength of the locations. To keep the consistency of the RSSI information, Wi-Fi beacons that have higher than -80 dBm are filtered for experiment. In averagely around 25 Wi-Fi radios there were listened and approximately 40\% of them were with RSSI above -80 dBm.In the experimental setup they have used, each Wi-Fi access point has contained 5 different radios. Averaging RSSI values over same access point has resulted more stable output. They introduce this approach as ?Nearest Neighbour in signal space and Access Point average?
+\subsubsection{Conclusion}As a conclusion for this approach by Martin et al. the approach delivers up to 1.5 meters accuracy level without using extra hardware. But when this approach compare with our requirement of capturing location information, this approach seems impractical for some of our use cases where there doesn?t exist fixed Wi-Fi infrastructure.
+
+\subsection{Concept for Building a Smartphone Based Indoor Localization System}
+Willemsen et al. propose a concept for indoor localization based on smartphone with a research paper published in International Conference on Information Fusion, 2014 \cite{49}. Proposed system uses Micro Electro Mechanical System (MEMS) sensors embedded in smartphones. Accelerometer, gyroscope, magnetic field sensor, barometer are those MEMS sensors that enable localization where there is no reliable GPS support. Fig. \ref{fig2_workflow} gives an overview of the system that proposed by Willemsen et al.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[]{Figures/31.png}
+\caption{Suggested Workflow}
+\label{fig2_workflow}
+\end{center}
+\end{figure}
+
+This research contains several steps that includes hardware selection, evaluation of hardware, position estimation, routing and implementation. Position estimation part of their research is the most relevant part for our application.
+
+\subsubsection{Usage of Sensors}
+
+\paragraph{\textbf{Barometer}}
+Authors have used a barometer to measure air pressure and calculated relative heights from sea level. If barometer reading is pi height related to that pressure hi is given by,
+
+\begin{align}
+\label{eqn:eq101}
+\begin{split}
+
+\[
+h_i=\left(1-\sqrt[5.255]{\frac{p_i}{1013.25}}\right)*\frac{288.15}{0.0065}
+\]
+
+\end{split}
+\end{align}
+With the help of barometer readings, authors could able to distinguish each floor of the test building. Height calculated using barometer readings were accurate up to 1m, floor was distinguished only using the mean value of barometer readings.
+
+\paragraph{\textbf{Accelerometer}}
+3-axis accelerometer integrated with a smartphone is used to level the smartphone coordination system while navigating. Even double integration of accelerometer outputs distance travelled, but the strong drift of the embedded accelerometer has provided unusable results. Therefor authors had to use accelerometer as a pedometer. They had calibrated the accelerometer with a method favouring Kalman filter.
+
+\paragraph{\textbf{Fusion Kalman Filter}}
+Position estimation of gyroscope and accelerometer data is not sufficient enough to calculate accurate position details. Authors have used Kalman filter to combine support information and MEMS readings. Before use in Kalman filter sensor data were averaged in order to reduce noise component generated by sensors. Height information that calculated with barometer readings is fed to Kalman filter. Fig. \ref{fig2_kalman_filter} shows the effect of Kalman filter. Blue line is related to location calculation without filter and red coloured line indicates location details captured with Kalman filter.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[width=\textwidth]{Figures/32.png}
+\caption{Trajectory Kalman Filter}
+\label{fig2_kalman_filter}
+\end{center}
+\end{figure}
+
+\subsubsection{Supportive Additives for Better Accuracy}
+Authors also tried RSSI information of Wi-Fi beacons to improve the accuracy of location capturing. The approach of using RSSI information is almost similar to approach in previous section.
+
+\section{Scene Description Languages}
+
+\subsection{XML Based Scene Description Language for a Virtual Museum}
+In their work \cite{50} the authors discuss the Scene Description Language (SDL) they have used specifically for a 3D Virtual Museum, to be viewed through the desktop.Three characteristics of a virtual reality system has been identified by John Vince \cite{51}. These are, immersion, interaction and imagination. The authors have not considered the immersive aspect of virtual reality as the use case is to be viewed on a desktop when creating the SDL.
+
+\subsubsection{Related Work}
+Under related work, the authors have mentioned Image-based rendering, which they consider not to be of use for their use case, giving five different reasons. But, this is a closer approach to the approaches used in our research work. This is called Image Based Rendering (IBR) technology \cite{52}.
+Another approach which they mention as being used in museums is Projection Based Immersive Virtual Environments, which are far from our approach towards virtual reality.
+The paper mentions another approach, which uses Virtual Reality Modelling Language (VRML) \cite{53} or the improved version eXtensible 3D (X3D) by the Web3D Consortium \cite{54}. These are defined as standard document formats to describe 3D objects in virtual environments X3D is using XML code and this enables it to be smoothly adapted to other applications, especially web applications. Since the design of X3D is guided by component technology, it is easily extendable.
+The above services are well suited for web environments.
+
+\subsubsection{About the XVM Backend}
+The authors suggest a schema called XML-Based Scene Description Language for 3D Virtual Museum (XVM) for their use case of virtual museum \cite{50}. They have designed this with four design issues applicable to the virtual museum, out of which two are applicable to our system. Firstly, the displayed content is repeated, and indexed. Secondly, it requires an authoring mechanism to construct and to parse the scenes.
+
+\begin{figure}[htbp]
+\begin{center}
+\includegraphics[]{Figures/33.png}
+\caption{System Structure of the Virtual Museum}
+\label{fig2_virtual_museum}
+\end{center}
+\end{figure}
+
+As shown in Fig. \ref{fig2_virtual_museum}, the XVM works separately, but parallel to the web server. This helps to maintain the real-time rendering in the XVM viewer by separation of the display environment from the rest.The XML mark-up has been used for SVM for the following reasons, according to the authors:
+\begin{enumerate}\item{Interoperability}\item{Self-Description}\item{Scalability}\item{Simplicity}\item{Flexibility}
+\end{enumerate}
+
+
